@@ -22,10 +22,6 @@ resource "aws_lb" "example" {
   ]
 }
 
-output "alb_dns_name" {
-  value = aws_lb.example.dns_name
-}
-
 module "http_sg" {
   source      = "./modules/security_group"
   name        = "http-sg"
