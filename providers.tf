@@ -7,3 +7,7 @@ provider "aws" {
     }
   }
 }
+
+provider "github" {
+  owner = "your-github-name"
+}
