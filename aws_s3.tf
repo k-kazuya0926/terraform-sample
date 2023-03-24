@@ -142,3 +142,19 @@ resource "aws_s3_bucket_lifecycle_configuration" "operation" {
     }
   }
 }
+
+resource "aws_s3_bucket" "cloudwatch_logs" {
+  bucket = "cloudwatch-logs-pragmatic-terraform"
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "cloudwatch_logs" {
+  bucket = aws_s3_bucket.cloudwatch_logs.id
+
+  rule {
+    id     = "expiration"
+    status = "Enabled"
+    expiration {
+      days = "180"
+    }
+  }
+}
