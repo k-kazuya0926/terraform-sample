@@ -8,6 +8,11 @@ provider "aws" {
   }
 }
 
+provider "aws" { # Multipleプロバイダ
+  alias  = "virginia"
+  region = "us-east-1"
+}
+
 provider "github" {
   owner = "your-github-name"
 }
