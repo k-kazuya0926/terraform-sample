@@ -28,6 +28,12 @@ resource "aws_db_subnet_group" "example" {
   subnet_ids = [aws_subnet.private_0.id, aws_subnet.private_1.id]
 }
 
+resource "random_password" "master_password" {
+  length           = 16
+  special          = true
+  override_special = "_%@"
+}
+
 resource "aws_db_instance" "example" {
   identifier                 = "example"
   engine                     = "mysql"
@@ -39,7 +45,7 @@ resource "aws_db_instance" "example" {
   storage_encrypted          = true
   kms_key_id                 = aws_kms_key.example.arn
   username                   = "admin"
-  password                   = "VeryStrongPassword!"
+  password                   = random_password.master_password.result
   multi_az                   = true
   publicly_accessible        = false
   backup_window              = "09:10-09:40"

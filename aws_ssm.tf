@@ -33,3 +33,10 @@ resource "aws_ssm_document" "session_manager_run_shell" {
   }
 EOF
 }
+
+resource "aws_ssm_parameter" "master_password" {
+  name        = "/example/database/master/password"
+  description = "The parameter description"
+  type        = "SecureString"
+  value       = random_password.master_password.result
+}
