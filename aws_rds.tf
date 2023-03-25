@@ -29,9 +29,8 @@ resource "aws_db_subnet_group" "example" {
 }
 
 resource "random_password" "master_password" {
-  length           = 16
-  special          = true
-  override_special = "_%@"
+  length  = 32
+  special = false # DBインスタンスのマスターパスワードでは一部の特殊文字が使えないため、false
 }
 
 resource "aws_db_instance" "example" {
