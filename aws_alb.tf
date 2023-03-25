@@ -133,3 +133,5 @@ resource "aws_lb_listener_rule" "example" {
     }
   }
 }
+
+data "aws_elb_service_account" "current" {}

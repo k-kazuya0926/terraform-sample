@@ -105,7 +105,7 @@ data "aws_iam_policy_document" "alb_log" {
     resources = ["arn:aws:s3:::${aws_s3_bucket.alb_log.id}/*"]
 
     principals {
-      identifiers = ["582318560864"]
+      identifiers = [data.aws_elb_service_account.current.id]
       type        = "AWS"
     }
   }
