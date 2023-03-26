@@ -4,6 +4,8 @@
 ## 参考資料
 - 実践Terraform
 - 基礎から学ぶTerraform
+- 公式ドキュメント  
+https://developer.hashicorp.com/terraform/docs
 
 ## メモ
 - AWS Provider  
