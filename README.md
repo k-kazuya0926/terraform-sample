@@ -4,6 +4,7 @@
 ## 参考資料
 - 実践Terraform
 - 基礎から学ぶTerraform
+- クラウド破産を回避するInfrastructure as Code実践ガイド
 - 公式ドキュメント  
 https://developer.hashicorp.com/terraform/docs
 
