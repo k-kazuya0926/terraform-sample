@@ -32,3 +32,14 @@ resource "aws_iam_group_policy_attachment" "admin" {
   group      = aws_iam_group.admin.name
   policy_arn = aws_iam_policy.admin_access.arn
 }
+
+resource "aws_iam_account_password_policy" "strict" {
+  minimum_password_length        = 32
+  require_uppercase_characters   = true
+  require_lowercase_characters   = true
+  require_numbers                = true
+  require_symbols                = true # !@#$%^&*()_+=[]{}|'
+  allow_users_to_change_password = true
+  password_reuse_prevention      = 24 # 24は最大値
+  max_password_age               = 0
+}
