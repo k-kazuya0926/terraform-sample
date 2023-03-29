@@ -15,11 +15,11 @@ terraform {
   #  }
 
   # Terraform Cloudを使用する場合
-  backend "remote" {
-    organization = "kazuya-kobayashi"
-
-    workspaces {
-      name = "example_workspace"
-    }
-  }
+  #  backend "remote" {
+  #    organization = "kazuya-kobayashi"
+  #
+  #    workspaces {
+  #      name = "example_workspace"
+  #    }
+  #  }
 }
