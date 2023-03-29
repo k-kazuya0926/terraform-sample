@@ -43,3 +43,8 @@ resource "aws_s3_bucket_public_access_block" "log" {
 #  policy     = data.aws_iam_policy_document.log.json
 #  depends_on = [aws_s3_bucket_public_access_block.log] # 同時applyできない
 #}
+
+module "alternative_log" {
+  source = "./log_bucket_module"
+  name   = "alternative-log-cloud-bankruptcy-iac-kazuya-kobayashi"
+}
