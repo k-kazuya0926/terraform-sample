@@ -43,3 +43,23 @@ resource "aws_iam_account_password_policy" "strict" {
   password_reuse_prevention      = 24 # 24は最大値
   max_password_age               = 0
 }
+
+# IPアドレスを制限する場合
+#data "aws_iam_policy_document" "log" {
+#  statement {
+#    effect    = "Deny"
+#    actions   = ["s3:*"]
+#    resources = ["${aws_s3_bucket.log.arn}/*"]
+#
+#    principals {
+#      identifiers = ["*"]
+#      type        = "*"
+#    }
+#
+#    condition {
+#      test     = "NotIpAddress"
+#      values   = ["192.0.2.1/32"]
+#      variable = "aws:SourceIp"
+#    }
+#  }
+#}
