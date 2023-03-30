@@ -64,37 +64,17 @@ data "aws_iam_policy_document" "alternative-log" {
   }
 }
 
-data "aws_iam_policy_document" "s3_access" {
+module "alternative_ec2" {
+  source     = "./iam_role_module"
+  name       = "alternative-ec2"
+  identifier = "ec2.amazonaws.com"
+  policy     = data.aws_iam_policy_document.alternative_ec2.json
+}
+
+data "aws_iam_policy_document" "alternative_ec2" {
   statement {
     effect    = "Allow"
     actions   = ["s3:*"]
     resources = ["*"]
   }
-}
-
-resource "aws_iam_policy" "s3_access" {
-  name   = "s3-access"
-  policy = data.aws_iam_policy_document.s3_access.json
-}
-
-# 信頼ポリシー
-data "aws_iam_policy_document" "ec2_assume_role" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      identifiers = ["ec2.amazonaws.com"] # IAMロールをEC2にアタッチ可能
-      type        = "Service"
-    }
-  }
-}
-
-resource "aws_iam_role" "ec2" {
-  name               = "ec2"
-  assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
-}
-
-resource "aws_iam_role_policy_attachment" "ec2" {
-  policy_arn = aws_iam_policy.s3_access.arn
-  role       = aws_iam_role.ec2.name
 }
