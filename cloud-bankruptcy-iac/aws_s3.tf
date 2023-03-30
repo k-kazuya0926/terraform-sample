@@ -8,3 +8,14 @@ resource "aws_s3_bucket_policy" "alternative-log" {
   policy     = data.aws_iam_policy_document.alternative-log.json
   depends_on = [module.alternative-log] # 同時applyできない
 }
+
+module "cloudtrail_log_bucket" {
+  source = "./log_bucket_module"
+  name   = "cloudtrail-log-cloud-bankruptcy-iac-kazuya-kobayashi"
+}
+
+resource "aws_s3_bucket_policy" "cloudtrail_log" {
+  bucket     = module.cloudtrail_log_bucket.name
+  policy     = data.aws_iam_policy_document.cloudtrail_log.json
+  depends_on = [module.cloudtrail_log_bucket]
+}

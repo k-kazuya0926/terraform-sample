@@ -78,3 +78,52 @@ data "aws_iam_policy_document" "alternative_ec2" {
     resources = ["*"]
   }
 }
+
+data "aws_iam_policy_document" "cloudtrail_log" {
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:GetBucketAcl"]
+    resources = [module.cloudtrail_log_bucket.arn]
+
+    principals {
+      identifiers = ["cloudtrail.amazonaws.com"]
+      type        = "Service"
+    }
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["${module.cloudtrail_log_bucket.arn}/*"]
+
+    principals {
+      identifiers = ["cloudtrail.amazonaws.com"]
+      type        = "Service"
+    }
+
+    condition {
+      test     = "StringEquals"
+      values   = ["bucket-owner-full-control"]
+      variable = "s3:x-amz-acl"
+    }
+  }
+}
+
+data "aws_iam_policy_document" "cloudtrail" {
+  statement {
+    effect    = "Allow"
+    resources = ["arn:aws:logs:*:*:log-group:*:log-stream:*"]
+
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+  }
+}
+
+module "cloudtrail_iam_role" {
+  source     = "./iam_role_module"
+  name       = "cloudtrail"
+  identifier = "cloudtrail.amazonaws.com"
+  policy     = data.aws_iam_policy_document.cloudtrail.json
+}
