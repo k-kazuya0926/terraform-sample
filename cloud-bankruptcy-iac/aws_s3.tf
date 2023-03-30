@@ -19,3 +19,14 @@ resource "aws_s3_bucket_policy" "cloudtrail_log" {
   policy     = data.aws_iam_policy_document.cloudtrail_log.json
   depends_on = [module.cloudtrail_log_bucket]
 }
+
+module "config_log_bucket" {
+  source = "./log_bucket_module"
+  name   = "config-log-cloud-bankruptcy-iac-kazuya-kobayashi"
+}
+
+resource "aws_s3_bucket_policy" "config_log" {
+  bucket     = module.config_log_bucket.name
+  policy     = data.aws_iam_policy_document.config_log.json
+  depends_on = [module.config_log_bucket]
+}

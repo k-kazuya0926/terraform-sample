@@ -127,3 +127,42 @@ module "cloudtrail_iam_role" {
   identifier = "cloudtrail.amazonaws.com"
   policy     = data.aws_iam_policy_document.cloudtrail.json
 }
+
+data "aws_iam_policy_document" "config_log" {
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:GetBucketAcl"]
+    resources = [module.config_log_bucket.arn]
+
+    principals {
+      identifiers = ["config.amazonaws.com"]
+      type        = "Service"
+    }
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["${module.config_log_bucket.arn}/AWSLogs/*/Config/*"]
+
+    principals {
+      identifiers = ["config.amazonaws.com"]
+      type        = "Service"
+    }
+
+    condition {
+      test     = "StringEquals"
+      values   = ["bucket-owner-full-control"]
+      variable = "s3:x-amz-acl"
+    }
+  }
+}
+
+resource "aws_iam_service_linked_role" "config" {
+  aws_service_name = "config.amazonaws.com"
+}
+
+# すでに存在する場合
+#data "aws_iam_role" "config" {
+#  name = "AWSServiceRoleForConfig"
+#}
