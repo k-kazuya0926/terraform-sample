@@ -44,22 +44,57 @@ resource "aws_iam_account_password_policy" "strict" {
   max_password_age               = 0
 }
 
-# IPアドレスを制限する場合
-#data "aws_iam_policy_document" "log" {
-#  statement {
-#    effect    = "Deny"
-#    actions   = ["s3:*"]
-#    resources = ["${aws_s3_bucket.log.arn}/*"]
-#
-#    principals {
-#      identifiers = ["*"]
-#      type        = "*"
-#    }
-#
-#    condition {
-#      test     = "NotIpAddress"
-#      values   = ["192.0.2.1/32"]
-#      variable = "aws:SourceIp"
-#    }
-#  }
-#}
+# IPアドレス制限
+data "aws_iam_policy_document" "alternative-log" {
+  statement {
+    effect    = "Deny"
+    actions   = ["s3:*"]
+    resources = ["${module.alternative-log.arn}/*"]
+
+    principals {
+      identifiers = ["*"]
+      type        = "*"
+    }
+
+    condition {
+      test     = "NotIpAddress"
+      values   = ["192.0.2.1/32"]
+      variable = "aws:SourceIp"
+    }
+  }
+}
+
+data "aws_iam_policy_document" "s3_access" {
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:*"]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "s3_access" {
+  name   = "s3-access"
+  policy = data.aws_iam_policy_document.s3_access.json
+}
+
+# 信頼ポリシー
+data "aws_iam_policy_document" "ec2_assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      identifiers = ["ec2.amazonaws.com"] # IAMロールをEC2にアタッチ可能
+      type        = "Service"
+    }
+  }
+}
+
+resource "aws_iam_role" "ec2" {
+  name               = "ec2"
+  assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "ec2" {
+  policy_arn = aws_iam_policy.s3_access.arn
+  role       = aws_iam_role.ec2.name
+}
