@@ -182,3 +182,39 @@ data "aws_iam_policy_document" "cloudwatch_events" {
     }
   }
 }
+
+data "aws_iam_policy_document" "cloudwatch_access" {
+  statement {
+    effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "cloudwatch:Describe*",
+      "cloudwatch:Get*",
+      "cloudwatch:List*",
+    ]
+  }
+}
+
+module "chatbot_iam_role" {
+  source     = "./iam_role_module"
+  name       = "chatbot"
+  identifier = "chatbot.amazonaws.com"
+  policy     = data.aws_iam_policy_document.cloudwatch_access.json
+}
+
+data "aws_iam_policy_document" "chatbot" {
+  statement {
+    effect    = "Allow"
+    resources = [aws_sns_topic.chatbot.arn]
+    actions   = ["sns:Publish"]
+
+    principals {
+      identifiers = [
+        "events.amazonaws.com",
+        "cloudwatch.amazonaws.com"
+      ]
+      type = "Service"
+    }
+  }
+}
