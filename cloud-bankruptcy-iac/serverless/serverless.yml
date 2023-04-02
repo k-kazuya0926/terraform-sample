@@ -24,6 +24,9 @@ provider:
   name: aws
   region: ap-northeast-1
   runtime: go1.x
+  logRetentionInDays: 7
+  memorySize: 128 # default 1024
+  versionFunctions: false
 
 # you can overwrite defaults here
 #  stage: dev
