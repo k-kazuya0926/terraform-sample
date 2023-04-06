@@ -27,3 +27,15 @@ functions:
               - 'aws.securityhub'
             detail-type:
               - 'Security Hub Findings - Imported'
+            detail:
+              findings:
+                Severity:
+                  Label:
+                    - 'CRITICAL'
+                    - 'HIGH'
+                    - 'MEDIUM'
+                # サービスを限定する場合
+#                ProductFields:
+#                  'aws/securityhub/ProductName':
+#                    - 'GuardDuty'
+#                    - 'IAM Access Analyzer'
