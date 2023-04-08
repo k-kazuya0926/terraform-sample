@@ -1,0 +1,28 @@
+service: serverless-access-key
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  region: ap-northeast-1
+  runtime: go1.x
+  logRetentionInDays: 7
+  memorySize: 128
+  versionFunctions: false
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'iam:ListUsers'
+        - 'iam:ListAcccessKeys'
+        - 'iam:UpdateAcccessKeys'
+      Resource: '*'
+
+package:
+  patterns:
+    - '!./**'
+    - ./bin/**
+
+functions:
+  inactivate:
+    handler: bin/main
+    events:
+      - schedule: rate(1 day)
