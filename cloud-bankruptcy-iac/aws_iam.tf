@@ -233,3 +233,26 @@ module "automation_security_group_iam_role" {
   identifier = "ssm.amazonaws.com"
   policy     = data.aws_iam_policy_document.security_group_access.json
 }
+
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_caller_identity.current.account_id] # AWSアカウントID
+    }
+  }
+}
+
+data "aws_caller_identity" "current" {}
+
+resource "aws_iam_role" "example" {
+  name               = "example"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "example" {
+  policy_arn = "arn:aws:iam::aws:policy/IAMReadOnlyAccess"
+  role       = aws_iam_role.example.name
+}
