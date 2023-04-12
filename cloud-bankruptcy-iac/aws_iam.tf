@@ -318,3 +318,23 @@ resource "aws_iam_group_membership" "assumable" {
   group = aws_iam_group.assumable.name
   users = [aws_iam_user.base.name]
 }
+
+resource "aws_iam_role" "readonly" {
+  name               = "readonly"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "readonly" {
+  policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  role       = aws_iam_role.readonly.name
+}
+
+resource "aws_iam_role" "admin" {
+  name               = "admin"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "admin" {
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role       = aws_iam_role.admin.name
+}
