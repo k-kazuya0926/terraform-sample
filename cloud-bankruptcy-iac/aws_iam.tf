@@ -338,3 +338,20 @@ resource "aws_iam_role_policy_attachment" "admin" {
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
   role       = aws_iam_role.admin.name
 }
+
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_caller_identity.current.account_id]
+    }
+
+    condition {
+      test     = "Bool"
+      values   = ["true"]
+      variable = "aws:MultiFactorAuthPresent" # MFAを実行したか
+    }
+  }
+}
