@@ -105,3 +105,10 @@ resource "aws_cloudwatch_event_target" "chatbot" {
   arn       = aws_sns_topic.chatbot.arn
   rule      = aws_cloudwatch_event_rule.guardduty.name
 }
+
+module "alternative_root_account_usages" {
+  source    = "./cloudwatch_alarms_module"
+  name      = "alternative-root-account-usages"
+  threshold = 1
+  pattern   = "{$.userIdentity.type=\"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType !=\"AwsServiceEvent\"}"
+}
