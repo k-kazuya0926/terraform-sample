@@ -240,7 +240,7 @@ data "aws_iam_policy_document" "assume_role" {
 
     principals {
       type        = "AWS"
-      identifiers = [data.aws_caller_identity.current.account_id]
+      identifiers = [data.aws_iam_user.base.arn] # baseのみ、AssumeRoleが可能。IAMグループは指定できない
     }
 
     condition {
@@ -249,6 +249,10 @@ data "aws_iam_policy_document" "assume_role" {
       variable = "aws:MultiFactorAuthPresent" # MFAを実行したか
     }
   }
+}
+
+data "aws_iam_user" "base" {
+  user_name = "base"
 }
 
 data "aws_caller_identity" "current" {}
@@ -265,10 +269,21 @@ resource "aws_iam_role_policy_attachment" "example" {
 
 data "aws_iam_policy_document" "assume_role_access" {
   statement {
-    effect    = "Allow"
-    actions   = ["sts:AssumeRole"]
-    resources = ["*"] # 本来は明示すべき
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+    resources = [
+      data.aws_iam_role.readonly.arn,
+      data.aws_iam_role.admin.arn,
+    ]
   }
+}
+
+data "aws_iam_role" "readonly" {
+  name = "readonly"
+}
+
+data "aws_iam_role" "admin" {
+  name = "admin"
 }
 
 resource "aws_iam_policy" "assume_role_access" {
