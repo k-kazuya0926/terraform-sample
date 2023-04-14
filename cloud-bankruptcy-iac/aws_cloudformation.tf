@@ -27,17 +27,20 @@ resource "aws_cloudformation_stack" "chatbot" {
         Type = "AWS::Chatbot::SlackChannelConfiguration"
         Properties = {
           ConfigurationName = "AlertNotifications"
-          SlackWorkspaceId  = "T045PJDTT5H"
-          SlackChannelId    = "C0462A8R6FK"
+          SlackWorkspaceId  = "EXAMPLEID"
+          SlackChannelId    = "ABCBBLZZZ"
           IamRoleArn        = module.chatbot_iam_role.arn
-          SnsTopicArns      = [aws_sns_topic.chatbot.arn]
+          SnsTopicArns = [
+            module.tokyo.sns_topic_arn,
+            module.virginia.sns_topic_arn,
+          ]
         }
       }
     }
   })
 }
 
-# 2020年9月時点ではTerraformでは設定できなかったためCloudFormationを使っている
+# 2020年9月時点ではTerraformでは設定できないためCloudFormationを使っている
 resource "aws_cloudformation_stack" "disable_security_group" {
   name = "AWS-DisablePublicAccessForSecurityGroup"
 
