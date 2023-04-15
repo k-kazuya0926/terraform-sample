@@ -19,7 +19,7 @@ functions:
   alert:
     handler: bin/main
     environment:
-      INCOMING_WEBHOOK_URL: ${env:SLACK_INCOMING_WEBHOOK_URL}
+      INCOMING_WEBHOOK_URL: ${ssm:/slack/incoming_webhook_url} # 末尾に「~true」は不要
     events:
       - cloudwatchEvent:
           event:
