@@ -1,5 +1,4 @@
 # terraform-sample
-自分用Terraformサンプル
 
 ## 参考資料
 - 実践Terraform
@@ -9,6 +8,44 @@
 https://developer.hashicorp.com/terraform/docs
 - AWS Provider  
   https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+
+## 技術一覧
+- IAM
+- S3
+- VPC
+- ALB
+- Route53
+- ACM
+- ECS
+- CloudWatch Logs
+- CloudWatch Events
+- KMS
+- パラメータストア
+- RDS
+- ElastiCache
+- ECR
+- CodeBuild
+- CodePipeline
+- Session Manager
+- EC2
+- Athena
+- Kinesis Data Firehorse
+- AWS Budgets
+- CloudTrail
+- AWS Config
+- SNS
+- GaurdDuty
+- IAM Access Analizer
+- Security Hub
+- Chatbot
+- Slack
+- Lambda
+- Systems Manager Automation
+- Go
+- Serverless Framework
+- STS
+- AWS Vault
+- CloudWatch Alarms
 
 ## メモ
 - 組み込み関数を試すには`terraform console`が便利
