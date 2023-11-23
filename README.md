@@ -29,13 +29,13 @@ https://developer.hashicorp.com/terraform/docs
 - Session Manager
 - EC2
 - Athena
-- Kinesis Data Firehorse
+- Kinesis Data Firehose
 - AWS Budgets
 - CloudTrail
 - AWS Config
 - SNS
-- GaurdDuty
-- IAM Access Analizer
+- GuardDuty
+- IAM Access Analyzer
 - Security Hub
 - Chatbot
 - Slack
