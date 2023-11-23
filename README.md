@@ -4,10 +4,13 @@
 - 実践Terraform
 - 基礎から学ぶTerraform
 - クラウド破産を回避するInfrastructure as Code実践ガイド
+- 詳解 Terraform 第3版
 - Terraform公式ドキュメント  
 https://developer.hashicorp.com/terraform/docs
 - AWS Provider  
   https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+- Built-in Functions  
+  https://developer.hashicorp.com/terraform/language/functions
 
 ## 技術一覧
 - IAM
@@ -49,6 +52,4 @@ https://developer.hashicorp.com/terraform/docs
 
 ## メモ
 - 組み込み関数を試すには`terraform console`が便利
-- Built-in Functions  
-https://developer.hashicorp.com/terraform/language/functions
 - .tfstateファイルはディレクトリごとに生成される
