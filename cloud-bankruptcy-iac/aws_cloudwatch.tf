@@ -131,7 +131,7 @@ module "console_sign_in_without_mfa" {
   source    = "./cloudwatch_alarms_module"
   name      = "console_sign_in_without_mfa"
   threshold = 1
-  pattern   = "{($.eventName=\"ConsoleLogin\") && ($.additionalEventData.MFAUsed !=\"Yes\")}"
+  pattern   = "{$.userIdentity.type !=\"AssumedRole\" && ($.eventName=\"ConsoleLogin\") && ($.additionalEventData.MFAUsed !=\"Yes\")}"
 }
 
 module "vpc_changes" {
