@@ -42,6 +42,28 @@ resource "aws_autoscaling_group" "example" {
   }
 }
 
+resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
+  count = var.enable_autoscaling ? 1 : 0
+
+  scheduled_action_name  = "${var.cluster_name}-scale-out-during-business-hours"
+  min_size               = 2
+  max_size               = 10
+  desired_capacity       = 10
+  recurrence             = "0 9 * * *"
+  autoscaling_group_name = aws_autoscaling_group.example.name
+}
+
+resource "aws_autoscaling_schedule" "scale_in_at_night" {
+  count = var.enable_autoscaling ? 1 : 0
+
+  scheduled_action_name  = "${var.cluster_name}-scale-in-at-night"
+  min_size               = 2
+  max_size               = 10
+  desired_capacity       = 2
+  recurrence             = "0 17 * * *"
+  autoscaling_group_name = aws_autoscaling_group.example.name
+}
+
 resource "aws_security_group" "instance" {
   name = "${var.cluster_name}-instance"
 
@@ -116,7 +138,7 @@ resource "aws_security_group" "alb" {
 
 resource "aws_security_group_rule" "allow_http_inbound" {
   type              = "ingress"
-  security_group_id = aws_security_group.alb
+  security_group_id = aws_security_group.alb.id
 
   from_port   = local.http_port
   to_port     = local.http_port
@@ -126,7 +148,7 @@ resource "aws_security_group_rule" "allow_http_inbound" {
 
 resource "aws_security_group_rule" "allow_all_outbound" {
   type              = "egress"
-  security_group_id = aws_security_group.alb
+  security_group_id = aws_security_group.alb.id
 
   from_port   = local.any_port
   to_port     = local.any_port
