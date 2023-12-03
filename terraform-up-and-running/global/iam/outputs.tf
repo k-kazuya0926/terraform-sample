@@ -14,3 +14,11 @@ output "neo_cloudwatch_policy_arn" {
     aws_iam_user_policy_attachment.neo_cloudwatch_read_only[*].policy_arn,
   ))
 }
+
+output "for_directive_index_if_strip" {
+  value = <<EOF
+%{~for i, name in var.user_names~}
+${name}%{if i < length(var.user_names) - 1}, %{endif}
+%{~endfor~}
+EOF
+}
