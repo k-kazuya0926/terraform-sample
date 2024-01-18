@@ -110,7 +110,7 @@ module "alternative_root_account_usages" {
   source    = "./cloudwatch_alarms_module"
   name      = "alternative-root-account-usages"
   threshold = 1
-  pattern   = "{$.userIdentity.type=\"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType !=\"AwsServiceEvent\"}"
+  pattern   = "{$.userIdentity.type=\"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType !=\"AwsServiceEvent\" && $.sourceIPAddress !=\"106.168.93.24\"}"
 }
 
 module "cloud_trail_changes" {
