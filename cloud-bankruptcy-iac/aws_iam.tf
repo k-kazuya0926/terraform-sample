@@ -356,8 +356,9 @@ resource "aws_iam_role_policy_attachment" "readonly" {
 }
 
 resource "aws_iam_role" "admin" {
-  name               = "admin"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  name                 = "admin"
+  assume_role_policy   = data.aws_iam_policy_document.assume_role.json
+  max_session_duration = 7200
 }
 
 resource "aws_iam_role_policy_attachment" "admin" {
