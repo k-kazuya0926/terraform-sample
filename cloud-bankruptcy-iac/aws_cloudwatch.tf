@@ -102,7 +102,7 @@ resource "aws_cloudwatch_event_target" "securityhub" {
 
 resource "aws_cloudwatch_event_target" "chatbot" {
   target_id = "chatbot"
-  arn       = aws_sns_topic.chatbot.arn
+  arn       = module.tokyo.sns_topic_arn
   rule      = aws_cloudwatch_event_rule.guardduty.name
 }
 

@@ -206,7 +206,7 @@ module "chatbot_iam_role" {
 data "aws_iam_policy_document" "chatbot" {
   statement {
     effect    = "Allow"
-    resources = [aws_sns_topic.chatbot.arn]
+    resources = [module.tokyo.sns_topic_arn]
     actions   = ["sns:Publish"]
 
     principals {
