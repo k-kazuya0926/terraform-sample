@@ -1,6 +1,11 @@
 variable "name" {}
 variable "threshold" {}
 variable "pattern" {}
+variable "actions_enabled" {
+  description = "Whether the alarm actions are enabled"
+  type        = bool
+  default     = true
+}
 
 resource "aws_cloudwatch_log_metric_filter" "this" {
   name           = var.name
@@ -24,6 +29,7 @@ resource "aws_cloudwatch_metric_alarm" "this" {
   evaluation_periods  = 1
   period              = 300
   treat_missing_data  = "notBreaching"
+  actions_enabled     = var.actions_enabled
   alarm_actions       = [data.aws_sns_topic.this.arn]
 }
 

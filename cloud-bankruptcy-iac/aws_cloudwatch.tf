@@ -184,10 +184,11 @@ module "console_sign_in_failures" {
 }
 
 module "authorization_failures" {
-  source    = "./cloudwatch_alarms_module"
-  name      = "authorization-failures"
-  threshold = 3
-  pattern   = "{($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\")}"
+  source          = "./cloudwatch_alarms_module"
+  name            = "authorization-failures"
+  threshold       = 3
+  pattern         = "{($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\")}"
+  actions_enabled = false
 }
 
 module "security_group_changes" {
